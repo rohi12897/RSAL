@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>RSA Learning World</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background: #eef5ff;
+    }
+    header {
+      background: #1d4ed8;
+      color: white;
+      padding: 15px;
+      text-align: center;
+    }
+    nav {
+      background: #2563eb;
+      padding: 10px;
+      text-align: center;
+    }
+    nav a {
+      color: white;
+      margin: 0 15px;
+      text-decoration: none;
+      font-weight: bold;
+    }
+    nav a:hover {
+      text-decoration: underline;
+    }
+    .container {
+      width: 90%;
+      margin: 20px auto;
+    }
+    h2 {
+      color: #1d4ed8;
+    }
+    .card {
+      background: white;
+      padding: 15px;
+      margin: 15px 0;
+      border-radius: 8px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+    iframe, video {
+      width: 100%;
+      height: 315px;
+      border-radius: 8px;
+    }
+    .upload {
+      border: 2px dashed #1d4ed8;
+      padding: 20px;
+      text-align: center;
+      margin-top: 20px;
+      border-radius: 8px;
+      background: #f8fbff;
+    }
+    footer {
+      text-align: center;
+      background: #1d4ed8;
+      color: white;
+      padding: 10px;
+      margin-top: 30px;
+    }
+    input, button {
+      margin: 10px 0;
+      padding: 10px;
+      border: 1px solid #2563eb;
+      border-radius: 6px;
+      width: 80%;
+      max-width: 300px;
+    }
+    button {
+      background: #2563eb;
+      color: white;
+      cursor: pointer;
+      font-weight: bold;
+    }
+    button:hover {
+      background: #1e40af;
+    }
+    a.file-link {
+      display: block;
+      margin: 5px 0;
+      color: #1d4ed8;
+      font-weight: bold;
+      text-decoration: none;
+    }
+    a.file-link:hover {
+      text-decoration: underline;
+    }
+    .success {
+      color: green;
+      margin-top: 10px;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>📘 RSA Learning World</h1>
+    <p>Learn Anytime, Anywhere</p>
+  </header>
+
+  <nav>
+    <a href="#upload">Upload</a>
+    <a href="#notes">Notes</a>
+    <a href="#videos">Videos</a>
+    <a href="#resources">Other Files</a>
+  </nav>
+
+  <div class="container">
+    <!-- Upload Section -->
+    <section id="upload">
+      <h2>⬆️ Upload Your Content</h2>
+      <div class="upload">
+        <p><strong>Upload Notes (PDF, DOCX)</strong></p>
+        <input type="file" id="noteUpload" accept=".pdf,.doc,.docx" multiple>
+
+        <p><strong>Upload Learning Videos (MP4, AVI)</strong></p>
+        <input type="file" id="videoUpload" accept="video/*" multiple>
+
+        <p><strong>Upload Other Resources (ZIP, PPT, etc.)</strong></p>
+        <input type="file" id="resourceUpload" multiple>
+
+        <button onclick="showUploads()">Upload</button>
+        <p id="uploadMessage" class="success"></p>
+      </div>
+    </section>
+
+    <!-- Notes Section -->
+    <section id="notes">
+      <h2>📄 Uploaded Notes</h2>
+      <div id="notesList" class="card">
+        <p>No notes uploaded yet.</p>
+      </div>
+    </section>
+
+    <!-- Videos Section -->
+    <section id="videos">
+      <h2>🎥 Uploaded Videos</h2>
+      <div id="videosList" class="card">
+        <p>No videos uploaded yet.</p>
+      </div>
+    </section>
+
+    <!-- Resources Section -->
+    <section id="resources">
+      <h2>🔗 Uploaded Other Files</h2>
+      <div id="resourcesList" class="card">
+        <p>No other files uploaded yet.</p>
+      </div>
+    </section>
+  </div>
+
+  <footer>
+    <p>© 2025 RSA Learning World | Made by Rohit</p>
+  </footer>
+
+  <script>
+    function showUploads() {
+      const notes = document.getElementById("noteUpload").files;
+      const videos = document.getElementById("videoUpload").files;
+      const resources = document.getElementById("resourceUpload").files;
+
+      const notesList = document.getElementById("notesList");
+      const videosList = document.getElementById("videosList");
+      const resourcesList = document.getElementById("resourcesList");
+      const uploadMsg = document.getElementById("uploadMessage");
+
+      // If new files are added, clear placeholder text
+      if (notes.length > 0) notesList.innerHTML = "";
+      if (videos.length > 0) videosList.innerHTML = "";
+      if (resources.length > 0) resourcesList.innerHTML = "";
+
+      let uploaded = false;
+
+      // Show notes
+      for (let file of notes) {
+        const link = document.createElement("a");
+        link.href = URL.createObjectURL(file);
+        link.textContent = "📄 " + file.name;
+        link.className = "file-link";
+        link.target = "_blank";
+        notesList.appendChild(link);
+        uploaded = true;
+      }
+
+      // Show videos
+      for (let file of videos) {
+        const video = document.createElement("video");
+        video.src = URL.createObjectURL(file);
+        video.controls = true;
+        video.style.width = "100%";
+        video.style.borderRadius = "8px";
+        videosList.appendChild(video);
+        uploaded = true;
+      }
+
+      // Show other resources
+      for (let file of resources) {
+        const link = document.createElement("a");
+        link.href = URL.createObjectURL(file);
+        link.textContent = "📦 " + file.name;
+        link.className = "file-link";
+        link.target = "_blank";
+        resourcesList.appendChild(link);
+        uploaded = true;
+      }
+
+      // Show success message
+      if (uploaded) {
+        uploadMsg.textContent = "✅ Files uploaded successfully!";
+        setTimeout(() => uploadMsg.textContent = "", 3000);
+      }
+    }
+  </script>
+</body>
+</html>
